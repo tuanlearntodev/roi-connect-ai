@@ -64,13 +64,44 @@ export default function ConsultationForm() {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    toast({
-      title: "Success! 🎉",
-      description: "We'll reach out to you shortly to discuss your insurance needs and ROI.",
-    });
-    form.reset();
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // Send data to n8n webhook
+      const response = await fetch("https://vnguy113.app.n8n.cloud/webhook/phase_1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          zipCode: data.zipCode,
+          insuranceType: data.insuranceType,
+          contactTime: data.contactTime,
+          currentInsurer: data.currentInsurer || "",
+          timestamp: new Date().toISOString(),
+          source: "roi_consultation_form",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send data to webhook");
+      }
+
+      toast({
+        title: "Success! 🎉",
+        description: "We'll reach out to you shortly to discuss your insurance needs and ROI.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error("Webhook error:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your form. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
