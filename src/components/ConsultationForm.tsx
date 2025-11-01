@@ -46,6 +46,11 @@ const formSchema = z.object({
   insuranceType: z.string().min(1, { message: "Please select an insurance type" }),
   contactTime: z.string().min(1, { message: "Please select your preferred contact time" }),
   currentInsurer: z.string().trim().max(100).optional(),
+  n8nWebhookUrl: z
+    .string()
+    .trim()
+    .url({ message: "Please enter a valid webhook URL" })
+    .min(1, { message: "n8n webhook URL is required" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -61,16 +66,47 @@ export default function ConsultationForm() {
       insuranceType: "",
       contactTime: "",
       currentInsurer: "",
+      n8nWebhookUrl: "",
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    toast({
-      title: "Success! 🎉",
-      description: "We'll reach out to you shortly to discuss your insurance needs and ROI.",
-    });
-    form.reset();
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // Send data to n8n webhook
+      const webhookData = {
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        zipCode: data.zipCode,
+        insuranceType: data.insuranceType,
+        contactTime: data.contactTime,
+        currentInsurer: data.currentInsurer,
+        timestamp: new Date().toISOString(),
+        source: window.location.origin,
+      };
+
+      await fetch(data.n8nWebhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify(webhookData),
+      });
+
+      toast({
+        title: "Success! 🎉",
+        description: "We'll reach out to you shortly to discuss your insurance needs and ROI.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error("Error sending to n8n:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit the form. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -236,6 +272,25 @@ export default function ConsultationForm() {
                     <FormControl>
                       <Input 
                         placeholder="e.g., State Farm, GEICO" 
+                        {...field}
+                        className="h-12 bg-background/50 border-border focus:border-primary transition-colors"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="n8nWebhookUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground font-medium">n8n Webhook URL</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="url"
+                        placeholder="https://your-n8n-instance.com/webhook/..." 
                         {...field}
                         className="h-12 bg-background/50 border-border focus:border-primary transition-colors"
                       />
