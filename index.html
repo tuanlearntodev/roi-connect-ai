@@ -15,6 +15,23 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Apollo script begin -->
+    <script>
+      (function initApolloInbound() {
+        var nocache = Math.random().toString(36).substring(7);
+        var script = document.createElement('script');
+        script.src = 'https://assets.apollo.io/js/apollo-inbound.js?nocache=' + nocache;
+        script.defer = true;
+        script.onload = function() {
+          window.ApolloInbound.formEnrichment.init({
+            appId: '6906ff44baa1b40015a8bb4f'
+          });
+        };
+        document.head.appendChild(script);
+      })();
+    </script>
+    <!-- Apollo script end -->
   </head>
 
   <body>
