@@ -246,10 +246,11 @@ export default function ConsultationForm() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-card border-border z-50">
-                          <SelectItem value="morning">Morning (9am-12pm)</SelectItem>
-                          <SelectItem value="afternoon">Afternoon (12pm-5pm)</SelectItem>
-                          <SelectItem value="evening">Evening (5pm-8pm)</SelectItem>
-                          <SelectItem value="anytime">Any Time</SelectItem>
+                          <SelectItem value="8-10am">8-10am</SelectItem>
+                          <SelectItem value="10-12pm">10-12pm</SelectItem>
+                          <SelectItem value="12-2pm">12-2pm</SelectItem>
+                          <SelectItem value="2-4pm">2-4pm</SelectItem>
+                          <SelectItem value="4-6pm">4-6pm</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
