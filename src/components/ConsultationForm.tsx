@@ -65,7 +65,7 @@ export default function ConsultationForm() {
   const onSubmit = async (data: FormValues) => {
     try {
       // Send data to n8n webhook
-      const response = await fetch("https://vnguy113.app.n8n.cloud/webhook/phase_1/flow_3", {
+      const response = await fetch("https://vnguy113.app.n8n.cloud/webhook/phase_1/flow_1", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
