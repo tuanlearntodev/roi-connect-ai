@@ -44,7 +44,6 @@ const formSchema = z.object({
     .regex(/^\d{5}(-\d{4})?$/, { message: "Please enter a valid ZIP code (e.g., 85281)" })
     .max(10),
   insuranceType: z.string().min(1, { message: "Please select an insurance type" }),
-  contactTime: z.string().min(1, { message: "Please select your preferred contact time" }),
   currentInsurer: z.string().trim().max(100).optional(),
 });
 
@@ -59,7 +58,6 @@ export default function ConsultationForm() {
       phone: "",
       zipCode: "",
       insuranceType: "",
-      contactTime: "",
       currentInsurer: "",
     },
   });
@@ -78,7 +76,6 @@ export default function ConsultationForm() {
           phone: data.phone,
           zipCode: data.zipCode,
           insuranceType: data.insuranceType,
-          contactTime: data.contactTime,
           currentInsurer: data.currentInsurer || "",
           timestamp: new Date().toISOString(),
           source: "roi_consultation_form",
@@ -206,58 +203,31 @@ export default function ConsultationForm() {
                 )}
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="insuranceType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-foreground font-medium">Type of Insurance Needed</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="h-12 bg-background/50 border-border focus:border-primary transition-colors">
-                            <SelectValue placeholder="Select insurance type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="bg-card border-border z-50">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectItem value="home">Home</SelectItem>
-                          <SelectItem value="renters">Renters</SelectItem>
-                          <SelectItem value="life">Life</SelectItem>
-                          <SelectItem value="business">Business</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="contactTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-foreground font-medium">Best Time to Contact</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="h-12 bg-background/50 border-border focus:border-primary transition-colors">
-                            <SelectValue placeholder="Select preferred time" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="bg-card border-border z-50">
-                          <SelectItem value="8-10am">8-10am</SelectItem>
-                          <SelectItem value="10-12pm">10-12pm</SelectItem>
-                          <SelectItem value="12-2pm">12-2pm</SelectItem>
-                          <SelectItem value="2-4pm">2-4pm</SelectItem>
-                          <SelectItem value="4-6pm">4-6pm</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="insuranceType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground font-medium">Type of Insurance Needed</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="h-12 bg-background/50 border-border focus:border-primary transition-colors">
+                          <SelectValue placeholder="Select insurance type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="bg-card border-border z-50">
+                        <SelectItem value="auto">Auto</SelectItem>
+                        <SelectItem value="home">Home</SelectItem>
+                        <SelectItem value="renters">Renters</SelectItem>
+                        <SelectItem value="life">Life</SelectItem>
+                        <SelectItem value="business">Business</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
